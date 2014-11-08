@@ -9,10 +9,15 @@ and open the template in the editor.
 */
 
 body{
-    margin-top: 70px;
+    margin-top: 40px;
 }
 
 .navbar form{
     margin-top: 0px;
      margin-bottom: 0px; 
+}
+
+#itemListPanel {
+    max-height: 600px;
+    overflow-y: auto;   
 }

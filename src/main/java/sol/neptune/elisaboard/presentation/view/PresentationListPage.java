@@ -44,7 +44,7 @@ public class PresentationListPage implements Serializable {
     
     private void initAllItems(){
         allItems.clear();
-        allItems.addAll(resource.findAll());
+        allItems.addAll(resource.findAllByGraph());
     }
 
     public String selectItem(PresentationItem item) {

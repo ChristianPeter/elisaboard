@@ -32,7 +32,7 @@ public class StartupHelper {
     @PostConstruct
     public void init() {
         LOG.info("Startup ...");
-        for (int c = 0; c < 10; c++) {
+        for (int c = 0; c < 20; c++) {
             PresentationItem i = new PresentationItem();
             i.setName("Demoitem " + c);
             i.setActive(true);
