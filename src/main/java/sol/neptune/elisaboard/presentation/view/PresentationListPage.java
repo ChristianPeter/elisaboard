@@ -39,6 +39,10 @@ public class PresentationListPage implements Serializable {
 
     @PostConstruct
     public void init() {
+        initAllItems();
+    }
+    
+    private void initAllItems(){
         allItems.clear();
         allItems.addAll(resource.findAll());
     }
@@ -51,6 +55,13 @@ public class PresentationListPage implements Serializable {
     
     public String cancel(){
         setSelectedItem(null);
+        return "";
+    }
+    
+    public String save(){
+        selectedItem = resource.merge(selectedItem);
+        //setSelectedItem(null);
+        initAllItems();
         return "";
     }
 
