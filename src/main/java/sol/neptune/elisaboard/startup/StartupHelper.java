@@ -23,28 +23,29 @@ import sol.neptune.elisaboard.presentation.domain.PresentationItem;
 @Startup
 @Singleton
 public class StartupHelper {
+
     private static final Logger LOG = Logger.getLogger(StartupHelper.class.getName());
-    
+
     @Inject
     private PresentationResource pr;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         LOG.info("Startup ...");
-        PresentationItem i = new PresentationItem();
-        i.setName("Demoitem");
-        i.setActive(true);
-        i.setDuration(10);
-        i.setPosition(0);
-        
-        
-        PresentationDocument doc = new PresentationDocument();
-        doc.setDocumentType(DocumentType.NOTE);
-        doc.setName("Demo Document");
-        
-        i.setDocument(doc);
-        
-        
-        pr.persist(i);
-        
+        for (int c = 0; c < 10; c++) {
+            PresentationItem i = new PresentationItem();
+            i.setName("Demoitem " + c);
+            i.setActive(true);
+            i.setDuration(10);
+            i.setPosition(c);
+
+            PresentationDocument doc = new PresentationDocument();
+            doc.setDocumentType(DocumentType.NOTE);
+            doc.setName("Demo Document " + c);
+
+            i.setDocument(doc);
+
+            pr.persist(i);
+        }
     }
 }

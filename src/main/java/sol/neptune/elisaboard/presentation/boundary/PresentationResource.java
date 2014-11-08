@@ -36,4 +36,8 @@ public class PresentationResource {
     public void persist(PresentationItem item){
         em.persist(item);
     }
+    
+    public PresentationItem findById(Long id){
+        return em.find(PresentationItem.class, id);
+    }
 }
