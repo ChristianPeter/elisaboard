@@ -62,4 +62,8 @@ public class PresentationResource {
     public PresentationItem findById(Long id) {
         return em.find(PresentationItem.class, id);
     }
+
+    public void delete(PresentationItem item) {
+        em.remove(em.merge(item));
+    }
 }

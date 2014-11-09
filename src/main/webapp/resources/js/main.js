@@ -18,6 +18,13 @@ function ocScrollToList(data) {
 }
 
 
+$(document).ready(function(){
+    $(document).on('click', '.btndelete', function(event){
+        event.preventDefault();
+        event.stopPropagation();
+    });
+});
+
 
 $(function() {
 /*!

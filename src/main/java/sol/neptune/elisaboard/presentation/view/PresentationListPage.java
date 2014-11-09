@@ -23,9 +23,9 @@ import sol.neptune.elisaboard.presentation.domain.PresentationItem;
 @ViewScoped
 @Named("presentationList")
 public class PresentationListPage implements Serializable {
+
     private static final Logger LOG = Logger.getLogger(PresentationListPage.class.getName());
 
-    
     @Inject
     private PresentationResource resource;
 
@@ -41,27 +41,39 @@ public class PresentationListPage implements Serializable {
     public void init() {
         initAllItems();
     }
-    
-    private void initAllItems(){
+
+    private void initAllItems() {
         allItems.clear();
         allItems.addAll(resource.findAllByGraph());
     }
 
     public String selectItem(PresentationItem item) {
-        LOG.info("select item: " +item.toString());
+        LOG.info("select item: " + item.toString());
         setSelectedItem(item);
         return "";
     }
-    
-    public String cancel(){
+
+    public String cancel() {
         setSelectedItem(null);
         return "";
     }
-    
-    public String save(){
+
+    public String delete(PresentationItem item) {
+        setSelectedItem(null);
+        resource.delete(item);
+        initAllItems();
+        return "";
+    }
+
+    public String save() {
         selectedItem = resource.merge(selectedItem);
         //setSelectedItem(null);
         initAllItems();
+        return "";
+    }
+
+    public String createItem() {
+        selectedItem = new PresentationItem();
         return "";
     }
 

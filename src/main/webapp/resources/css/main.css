@@ -21,3 +21,7 @@ body{
     max-height: 600px;
     overflow-y: auto;   
 }
+
+#listnavbar{
+    margin-bottom: 5px;
+}

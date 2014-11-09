@@ -12,23 +12,51 @@
         <div class="page-header">
             <h1>Example page header <small>Subtext for header</small></h1>
         </div>
-        <div class="alert alert-success" role="alert">
-            <a href="#" class="alert-link">...</a>
-        </div>
+        <!--        <div class="alert alert-success" role="alert">
+                    <a href="#" class="alert-link">...</a>
+                </div>-->
+
         <div class="row">
             <div class="col-sm-4" id="listCol">
-
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Current Items</h3>
                     </div>
                     <h:form id="mainForm">
+                        <div id="listnavbar" class="navbar navbar-default">
+                            <div class="container-fluid">
+                                <ul class="nav navbar-nav navbar-left">
+                                    <!--<li><a href="#">Link</a></li>-->
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">New <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                <a href="#" jsf:action="#{presentationList.createItem()}">VPLAN
+                                                    <f:ajax execute="@this" render="detailForm:details :detailTitle" onevent="ocScrollToDetail"/>
+                                                </a>
+                                            </li>
+                                            <li><a href="#">PDF</a></li>
+                                            <li><a href="#">Image</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#">Manage Documents</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
                         <div class="panel-body" id="itemListPanel">
                             <div jsf:id="itemList" class="list-group">
                                 <ui:repeat value="#{presentationList.allItems}" var="item">
                                     <a href="#" class="list-group-item presentation-list-item" jsf:action="#{presentationList.selectItem(item)}">
                                         <f:ajax execute="@this" render="detailForm:details :detailTitle" onevent="ocScrollToDetail"/>
-                                        <h4 class="list-group-item-heading">#{item.name}</h4>
+                                        <h4 class="list-group-item-heading">#{item.name}
+                                            <span onclick="event.preventDefault();
+                                                    event.stopPropagation();">
+                                                <button class="pull-right btn btn-danger btn-sm btndelete">Delete</button>
+                                            </span>
+                                        </h4>
                                         <p class="list-group-item-text">Duration: #{item.duration}</p>
                                         <p class="list-group-item-text">Type: #{item.document.documentType}</p>
                                         <p class="list-group-item-text">Duration: #{item.duration}</p>
@@ -45,8 +73,8 @@
                     <div class="panel-heading" jsf:id="detailTitle">
                         <h3 class="panel-title">Details for #{presentationList.selectedItem.name}</h3>
                     </div>
-                    <div class="panel-body">
-                        <form jsf:id="detailForm" class="form-horizontal" role="form">
+                    <form jsf:id="detailForm" class="form-horizontal" role="form">
+                        <div class="panel-body">
                             <div jsf:id="details">
                                 <div jsf:rendered="#{not empty presentationList.selectedItem}">
                                     <div class="form-group">
@@ -79,9 +107,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
 
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
