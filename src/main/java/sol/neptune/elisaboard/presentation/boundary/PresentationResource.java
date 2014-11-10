@@ -5,7 +5,9 @@
  */
 package sol.neptune.elisaboard.presentation.boundary;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -60,7 +62,12 @@ public class PresentationResource {
     }
 
     public PresentationItem findById(Long id) {
-        return em.find(PresentationItem.class, id);
+        final EntityGraph<PresentationItem> eg = em.createEntityGraph(PresentationItem.class);
+
+        eg.addSubgraph("document", PresentationDocument.class).addAttributeNodes("name", "documentType", "htmlData");
+        Map<String, Object> props = new HashMap<>();
+        props.put("javax.persistence.loadgraph", eg);
+        return em.find(PresentationItem.class, id, props);
     }
 
     public void delete(PresentationItem item) {

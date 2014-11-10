@@ -23,6 +23,11 @@ $(document).ready(function(){
         event.preventDefault();
         event.stopPropagation();
     });
+    
+    $(document).on('click', '#btnShowContent', function(event){
+        var payload = $('#documentData').text();
+        $('#previewFrame').contents().find('html').html(payload);
+    });
 });
 
 

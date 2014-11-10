@@ -73,7 +73,7 @@
                     <div class="panel-heading" jsf:id="detailTitle">
                         <h3 class="panel-title">Details for #{presentationList.selectedItem.name}</h3>
                     </div>
-                    <form jsf:id="detailForm" class="form-horizontal" role="form">
+                    <form jsf:id="detailForm" class="form-horizontal" role="form" enctype="multipart/form-data">
                         <div class="panel-body">
                             <div jsf:id="details">
                                 <div jsf:rendered="#{not empty presentationList.selectedItem}">
@@ -81,6 +81,31 @@
                                         <label for="inputName" class="col-sm-2 control-label">Name</label>
                                         <div class="col-sm-10">
                                             <input jsf:value="#{presentationList.selectedItem.name}" type="text" class="form-control" jsf:id="inputName" placeholder="Name of PresentationItem"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" jsf:id="currentDocument">
+                                        <label class="col-sm-2 control-label">Document</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">#{presentationList.selectedItem.document}</p>
+                                            <script id="documentData" type="text/hiddenData">
+                                                #{presentationList.selectedItem.document.htmlData}
+                                            </script>
+                                            <button id="btnShowContent" type="button" data-toggle="modal" data-target="#myModal">Show</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" jsf:id="fileuploadPanel">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <h:inputFile id="fileupload" value="#{presentationList.file}" >
+                                                <f:ajax listener="#{presentationList.uploadAjax}" execute="@this" render="btnProcess"/>    
+                                            </h:inputFile>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" jsf:id="btnProcess">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button jsf:disabled="#{empty presentationList.file}" jsf:action="#{presentationList.processFile}" type="button" class="btn btn-default">Process file
+                                                <f:ajax execute="@this" render="btnProcess fileuploadPanel currentDocument"/>
+                                            </button>
                                         </div>
                                     </div>
 
@@ -115,6 +140,21 @@
 
         </div>
 
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog"  style="width: 1000px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="previewFrame" src="#" height="800px" width="100%"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
 
 </ui:composition>

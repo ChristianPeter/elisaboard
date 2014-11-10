@@ -7,8 +7,10 @@ package sol.neptune.elisaboard.presentation.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.Lob;
 
 /**
  *
@@ -18,11 +20,15 @@ import javax.persistence.Enumerated;
 public class PresentationDocument extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String name;
-    
+
     @Enumerated
     private DocumentType documentType;
+
+    @Lob
+    @Column( length = 100000 )
+    private String htmlData;
 
     public String getName() {
         return name;
@@ -38,6 +44,14 @@ public class PresentationDocument extends AbstractEntity implements Serializable
 
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
+    }
+
+    public String getHtmlData() {
+        return htmlData;
+    }
+
+    public void setHtmlData(String htmlData) {
+        this.htmlData = htmlData;
     }
 
     @Override
@@ -70,6 +84,5 @@ public class PresentationDocument extends AbstractEntity implements Serializable
     public String toString() {
         return "PresentationDocument{" + "name=" + name + ", documentType=" + documentType + '}';
     }
-    
-    
+
 }
