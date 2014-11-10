@@ -29,23 +29,28 @@ public class StartupHelper {
     @Inject
     private PresentationResource pr;
 
+    private boolean createDemoData = false;
+
     @PostConstruct
     public void init() {
         LOG.info("Startup ...");
-        for (int c = 0; c < 20; c++) {
-            PresentationItem i = new PresentationItem();
-            i.setName("Demoitem " + c);
-            i.setActive(true);
-            i.setDuration(10);
-            i.setPosition(c);
 
-            PresentationDocument doc = new PresentationDocument();
-            doc.setDocumentType(DocumentType.NOTE);
-            doc.setName("Demo Document " + c);
+        if (createDemoData) {
+            for (int c = 0; c < 20; c++) {
+                PresentationItem i = new PresentationItem();
+                i.setName("Demoitem " + c);
+                i.setActive(true);
+                i.setDuration(10);
+                i.setPosition(c);
 
-            i.setDocument(doc);
+                PresentationDocument doc = new PresentationDocument();
+                doc.setDocumentType(DocumentType.NOTE);
+                doc.setName("Demo Document " + c);
 
-            pr.persist(i);
+                i.setDocument(doc);
+
+                pr.persist(i);
+            }
         }
     }
 }
