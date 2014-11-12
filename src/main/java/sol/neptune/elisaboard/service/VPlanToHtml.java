@@ -68,6 +68,7 @@ public class VPlanToHtml {
     private boolean gotBounds;
     private int firstColumn;
     private int endColumn;
+    private int maxColumns  = -1;
     private HtmlHelper helper;
 
     private static final String DEFAULTS_CLASS = "excelDefaults";
@@ -386,6 +387,10 @@ public class VPlanToHtml {
                 endColumn = Math.max(endColumn, row.getLastCellNum());
             }
         }
+        
+        if (maxColumns > 0 && endColumn > maxColumns){
+            endColumn = maxColumns;
+        }
         gotBounds = true;
     }
 
@@ -472,5 +477,9 @@ public class VPlanToHtml {
             }
         }
         return "";
+    }
+
+    void setMaxCols(int i) {
+        maxColumns = i;
     }
 }

@@ -8,14 +8,11 @@ package sol.neptune.elisaboard.presentation.view;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -95,8 +92,8 @@ public class PresentationListPage implements Serializable {
     
     public void processFile() {
         LOG.info("processFile ... " + file);
-        final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        LOG.info("Locale : " + locale.getDisplayName());
+//        final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//        LOG.info("Locale : " + locale.getDisplayName());
         if(file != null){
             try {
                 final InputStream is = file.getInputStream();

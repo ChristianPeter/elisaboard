@@ -24,9 +24,10 @@ public class ExcelProcessor implements Serializable {
     public String processExcel(InputStream is) throws IOException, ParserConfigurationException {
         LOG.info("process Excel...");
         StringBuilder output = new StringBuilder();
-        final VPlanToHtml temp = VPlanToHtml.create(is, output);
-        temp.setCompleteHTML(true);
-        temp.printPage();
+        final VPlanToHtml processor = VPlanToHtml.create(is, output);
+        processor.setCompleteHTML(true);
+        processor.setMaxCols(4);
+        processor.printPage();
         return output.toString();
         /*
          HSSFWorkbook wb = new HSSFWorkbook(is);
