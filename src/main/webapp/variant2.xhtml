@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/templates/template.xhtml">
+    <ui:param name="pageTitle" value="Variant 2"/>
+    <ui:param name="pageId" value="Variant2"/>
+    <ui:define name="content">
+
+        <div class="page-header">
+            <h1>Example page header <small>Subtext for header</small></h1>
+        </div>
+
+
+        <div class="container-fluid" id="sortme"> 
+            <ui:repeat value="#{presentationList.allItems}" var="item">
+                <div class="col-xs-4 col-sm-3 col-md-2 mypanel" >
+                    <div class="panel panel-primary">
+                        <div class="panel-heading ui-sortable-handle">
+                            <h4 class="panel-title">#{item.name}
+                                <div class="btn-group pull-right">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Another action</a></li>
+                                        <li><a href="#">Something else here</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Separated link</a></li>
+                                    </ul>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-xs-4">Duration</div>
+                            <div class="col-xs-8">#{item.duration}</div>
+                            <div class="col-xs-4">Type</div>
+                            <div class="col-xs-8">#{item.document.documentType}</div>
+                        
+                        </div>
+
+                    </div>
+
+                </div>
+            </ui:repeat>
+        </div>
+
+
+        <script>
+            //<![CDATA[
+            
+            $(document).ready(function () {
+
+                var $container = $('#sortme');
+                
+                $container.sortable({
+                    placeholder: "ui-state-highlight col-xs-4 col-sm-3 col-md-2 mypanel",
+                    tolerance: "pointer",
+                    helper: "clone",
+                    handle: ".panel-heading",
+                    stop: handleDrop
+                });
+                $container.disableSelection();
+
+                $container.on('click', '.btnDelete', function (event) {
+                    $(this).closest('.mypanel').remove();
+                });
+
+                $container.on('click', '.panel-body', function (event) {
+                    $container.find('.panel').addClass('panel-default').removeClass('panel-primary');
+                    $(this).closest('.panel').toggleClass('panel-default').toggleClass('panel-primary');
+                });
+
+            });
+
+
+            function handleDrop() {
+                var $container = $('#sortme');
+
+                var uuids = [];
+
+                uuids = $.map($container.children('.mypanel'), function (elt) {
+                    return $(elt).data('uuid');
+                });
+
+                //$('#debug').text(JSON.stringify(uuids));
+            }
+
+            //]]>
+        </script>
+    </ui:define>
+
+</ui:composition>

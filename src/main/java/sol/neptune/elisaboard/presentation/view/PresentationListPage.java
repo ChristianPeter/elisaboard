@@ -9,17 +9,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 import javax.xml.parsers.ParserConfigurationException;
 import sol.neptune.elisaboard.presentation.boundary.PresentationResource;
+import sol.neptune.elisaboard.presentation.domain.DocumentType;
+import sol.neptune.elisaboard.presentation.domain.PresentationDocument;
 import sol.neptune.elisaboard.presentation.domain.PresentationItem;
 import sol.neptune.elisaboard.service.ExcelProcessor;
 
@@ -52,6 +58,18 @@ public class PresentationListPage implements Serializable {
     @PostConstruct
     public void init() {
         initAllItems();
+    }
+    
+    
+    public List<SelectItem> getAllDocumentTypes(){
+        List<SelectItem> items = new ArrayList<>();
+        
+        for (DocumentType d : DocumentType.values()){
+            SelectItem i = new SelectItem();
+            i.setValue(d);
+            i.setLabel(d.name());
+        }
+        return items;
     }
 
     private void initAllItems() {
@@ -87,6 +105,7 @@ public class PresentationListPage implements Serializable {
 
     public String createItem() {
         selectedItem = new PresentationItem();
+        selectedItem.setDocument(new PresentationDocument());
         return "";
     }
     

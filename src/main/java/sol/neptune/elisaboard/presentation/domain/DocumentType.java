@@ -15,4 +15,6 @@ public enum DocumentType {
     NOTE,
     PPT,
     IMG;
+
+    
 }

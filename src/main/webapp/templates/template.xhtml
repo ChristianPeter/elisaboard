@@ -14,7 +14,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>#{pageTitle}</title>
         <h:outputStylesheet name="./vendor/bootstrap/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="./vendor/jquery-ui-1.10.0.custom.min.css"/>
         <h:outputScript name="./vendor/jquery-1.11.1.min.js"/>
+        <h:outputScript name="./vendor/jquery-ui.js"/>
         <h:outputScript name="./vendor/bootstrap/js/bootstrap.min.js"/>
         <h:outputStylesheet name="./css/main.css"/>
         <h:outputScript name="./js/main.js"/>
@@ -38,6 +40,8 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#{request.contextPath}">Home</a></li>
+                        <li><a href="#{request.contextPath}/faces/variant2.xhtml">Variant2</a></li>
+                        <li><a href="#{request.contextPath}/faces/variant3.xhtml">Variant3</a></li>                        
                         <li><a href="#">Admin</a></li>
                     </ul>
                     <h:form class="navbar-form navbar-right" role="form">

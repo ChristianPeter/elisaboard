@@ -25,3 +25,15 @@ body{
 #listnavbar{
     margin-bottom: 5px;
 }
+
+
+/* for variant 2 */
+.mypanel {
+	height: 130px;
+	/*min-height: 200px;*/
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.mypanel > .panel{
+	height: 100%;
+}
