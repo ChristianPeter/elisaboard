@@ -15,8 +15,8 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import sol.neptune.elisaboard.presentation.domain.PresentationDocument;
-import sol.neptune.elisaboard.presentation.domain.PresentationItem;
+import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
+import sol.neptune.elisaboard.presentation.entity.PresentationItem;
 
 /**
  *

@@ -9,12 +9,13 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import sol.neptune.elisaboard.presentation.boundary.PresentationResource;
-import sol.neptune.elisaboard.presentation.domain.DocumentType;
-import sol.neptune.elisaboard.presentation.domain.PresentationDocument;
-import sol.neptune.elisaboard.presentation.domain.PresentationItem;
+import sol.neptune.elisaboard.presentation.entity.DocumentType;
+import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
+import sol.neptune.elisaboard.presentation.entity.PresentationItem;
+import sol.neptune.elisaboard.viewport.boundary.ViewportsResource;
+import sol.neptune.elisaboard.viewport.entity.Viewport;
 
 /**
  *
@@ -28,15 +29,25 @@ public class StartupHelper {
 
     @Inject
     private PresentationResource pr;
+    
+    @Inject
+    private ViewportsResource vr;
 
-    private boolean createDemoData = false;
+    private boolean createDemoData = true;
 
     @PostConstruct
     public void init() {
         LOG.info("Startup ...");
 
         if (createDemoData) {
-            for (int c = 0; c < 20; c++) {
+            LOG.info("creat demodata...");
+            Viewport vp = vr.findOrCreateMainViewport();
+            
+            
+            
+            
+            
+            for (int c = 0; c < 5; c++) {
                 PresentationItem i = new PresentationItem();
                 i.setName("Demoitem " + c);
                 i.setActive(true);
@@ -49,6 +60,7 @@ public class StartupHelper {
 
                 i.setDocument(doc);
 
+                vp.getSlotA().getPresentationStream().getItems().add(i);
                 pr.persist(i);
             }
         }

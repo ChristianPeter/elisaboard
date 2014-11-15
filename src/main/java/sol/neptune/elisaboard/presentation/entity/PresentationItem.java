@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sol.neptune.elisaboard.presentation.domain;
+package sol.neptune.elisaboard.presentation.entity;
 
+import sol.neptune.elisaboard.common.entity.AbstractEntity;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -19,6 +20,8 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 public class PresentationItem extends AbstractEntity implements Serializable {
+    @ManyToOne
+    private PresenationStream presenationStream;
 
     private static final long serialVersionUID = 1L;
 

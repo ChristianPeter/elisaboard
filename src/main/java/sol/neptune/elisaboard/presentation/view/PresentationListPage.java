@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -24,10 +24,12 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 import javax.xml.parsers.ParserConfigurationException;
 import sol.neptune.elisaboard.presentation.boundary.PresentationResource;
-import sol.neptune.elisaboard.presentation.domain.DocumentType;
-import sol.neptune.elisaboard.presentation.domain.PresentationDocument;
-import sol.neptune.elisaboard.presentation.domain.PresentationItem;
+import sol.neptune.elisaboard.presentation.entity.DocumentType;
+import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
+import sol.neptune.elisaboard.presentation.entity.PresentationItem;
 import sol.neptune.elisaboard.service.ExcelProcessor;
+import sol.neptune.elisaboard.viewport.boundary.ViewportsResource;
+import sol.neptune.elisaboard.viewport.entity.Viewport;
 
 /**
  *
@@ -41,9 +43,33 @@ public class PresentationListPage implements Serializable {
 
     @Inject
     private PresentationResource resource;
+    
+    @Inject
+    private ViewportsResource vpResource;
 
     @Inject
     private ExcelProcessor excelProcessor;
+
+    
+    private Viewport viewport;
+
+    @Produces
+    @ViewScoped
+    @Named("viewport")
+    public Viewport getViewport() {
+        if (viewport == null){
+            viewport = vpResource.findOrCreateMainViewport();
+        }
+        return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
+    }
+    
+    
+    
+    
     
     List<PresentationItem> allItems = new ArrayList<>();
 
@@ -52,19 +78,18 @@ public class PresentationListPage implements Serializable {
     }
 
     private PresentationItem selectedItem;
-    
+
     private Part file;
 
     @PostConstruct
     public void init() {
         initAllItems();
     }
-    
-    
-    public List<SelectItem> getAllDocumentTypes(){
+
+    public List<SelectItem> getAllDocumentTypes() {
         List<SelectItem> items = new ArrayList<>();
-        
-        for (DocumentType d : DocumentType.values()){
+
+        for (DocumentType d : DocumentType.values()) {
             SelectItem i = new SelectItem();
             i.setValue(d);
             i.setLabel(d.name());
@@ -79,13 +104,12 @@ public class PresentationListPage implements Serializable {
 
     public String selectItem(PresentationItem item) {
         LOG.info("select item: " + item.toString());
-        
         setSelectedItem(resource.findById(item.getId()));
         return "";
     }
 
     public String cancel() {
-        setSelectedItem(null);
+//        setSelectedItem(null);
         return "";
     }
 
@@ -97,6 +121,8 @@ public class PresentationListPage implements Serializable {
     }
 
     public String save() {
+        final PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+        LOG.info("save()" + selectedItem + phaseId.getName());
         selectedItem = resource.merge(selectedItem);
         //setSelectedItem(null);
         initAllItems();
@@ -108,12 +134,12 @@ public class PresentationListPage implements Serializable {
         selectedItem.setDocument(new PresentationDocument());
         return "";
     }
-    
+
     public void processFile() {
         LOG.info("processFile ... " + file);
 //        final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 //        LOG.info("Locale : " + locale.getDisplayName());
-        if(file != null){
+        if (file != null) {
             try {
                 final InputStream is = file.getInputStream();
                 selectedItem.getDocument().setName(file.getSubmittedFileName());
@@ -129,9 +155,10 @@ public class PresentationListPage implements Serializable {
         setFile(null);
     }
 
-    public void uploadAjax(AjaxBehaviorEvent event){
+    public void uploadAjax(AjaxBehaviorEvent event) {
         LOG.info("uploadAjax ... " + file);
     }
+
     public PresentationItem getSelectedItem() {
         return selectedItem;
     }
@@ -147,7 +174,5 @@ public class PresentationListPage implements Serializable {
     public void setFile(Part file) {
         this.file = file;
     }
-    
-    
 
 }
