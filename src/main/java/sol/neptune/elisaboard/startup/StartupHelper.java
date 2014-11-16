@@ -59,7 +59,7 @@ public class StartupHelper {
                 doc.setName("Demo Document " + c);
 
                 i.setDocument(doc);
-
+                i.setPresentationStream(vp.getSlotA().getPresentationStream());
                 vp.getSlotA().getPresentationStream().getItems().add(i);
                 pr.persist(i);
             }

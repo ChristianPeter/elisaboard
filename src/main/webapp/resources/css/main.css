@@ -34,6 +34,13 @@ body{
     margin-top: 50px;
 }
 
+.viewport-cell.active{
+    background-color: #a6e1ec;
+}
+.viewport-cell:hover{
+    background-color: #428bca;
+}
+
 .viewport-cell-b{
     height: 0px;
     width: 100%;

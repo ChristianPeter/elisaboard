@@ -20,8 +20,9 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 public class PresentationItem extends AbstractEntity implements Serializable {
+
     @ManyToOne
-    private PresenationStream presenationStream;
+    private PresentationStream presentationStream;
 
     private static final long serialVersionUID = 1L;
 
@@ -33,8 +34,8 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     private boolean active;
     @NotNull
     private int duration = 20; // duration in secs
-    
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private PresentationDocument document;
 
     public int getPosition() {
@@ -77,8 +78,14 @@ public class PresentationItem extends AbstractEntity implements Serializable {
         this.document = document;
     }
 
-    
-    
+    public PresentationStream getPresentationStream() {
+        return presentationStream;
+    }
+
+    public void setPresentationStream(PresentationStream presentationStream) {
+        this.presentationStream = presentationStream;
+    }
+
     @Override
     public String toString() {
         return "PresentationItem{" + "position=" + position + ", name=" + name + ", active=" + active + ", duration=" + duration + '}';

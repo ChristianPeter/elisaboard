@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import sol.neptune.elisaboard.common.entity.AbstractEntity;
-import sol.neptune.elisaboard.presentation.entity.PresenationStream;
+import sol.neptune.elisaboard.presentation.entity.PresentationStream;
 
 /**
  *
@@ -33,13 +33,13 @@ public class ViewportSlot extends AbstractEntity implements Serializable {
     }
 
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private PresenationStream presentationStream;
+    private PresentationStream presentationStream;
 
-    public PresenationStream getPresentationStream() {
+    public PresentationStream getPresentationStream() {
         return presentationStream;
     }
 
-    public void setPresentationStream(PresenationStream presentationStream) {
+    public void setPresentationStream(PresentationStream presentationStream) {
         this.presentationStream = presentationStream;
     }
     

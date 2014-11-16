@@ -19,11 +19,11 @@ import sol.neptune.elisaboard.common.entity.AbstractEntity;
  * @author murdoc
  */
 @Entity
-public class PresenationStream extends AbstractEntity implements Serializable {
+public class PresentationStream extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "presenationStream", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "presentationStream", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private List<PresentationItem> items = new ArrayList<>();
 
     public List<PresentationItem> getItems() {

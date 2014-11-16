@@ -11,7 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import sol.neptune.elisaboard.presentation.entity.PresenationStream;
+import sol.neptune.elisaboard.presentation.entity.PresentationStream;
 import sol.neptune.elisaboard.viewport.entity.Viewport;
 import sol.neptune.elisaboard.viewport.entity.ViewportSlot;
 import sol.neptune.elisaboard.viewport.entity.ViewportSlotType;
@@ -55,8 +55,12 @@ public class ViewportsResource {
         viewport.setSlotA(slot);
         slot.setSlotType(ViewportSlotType.PRESENTATIONSTREAM);
 
-        PresenationStream stream = new PresenationStream();
+        PresentationStream stream = new PresentationStream();
         slot.setPresentationStream(stream);
+        
+        ViewportSlot slot2 = new ViewportSlot();
+        viewport.setSlotB(slot2);
+        slot2.setSlotType(ViewportSlotType.WIDGETS);
 
         em.persist(viewport);
         return viewport;

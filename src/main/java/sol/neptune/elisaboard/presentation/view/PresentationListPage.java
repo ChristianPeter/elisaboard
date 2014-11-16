@@ -24,12 +24,16 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 import javax.xml.parsers.ParserConfigurationException;
 import sol.neptune.elisaboard.presentation.boundary.PresentationResource;
+import sol.neptune.elisaboard.presentation.control.PresentationControl;
 import sol.neptune.elisaboard.presentation.entity.DocumentType;
 import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
 import sol.neptune.elisaboard.presentation.entity.PresentationItem;
+import sol.neptune.elisaboard.presentation.entity.PresentationStream;
 import sol.neptune.elisaboard.service.ExcelProcessor;
 import sol.neptune.elisaboard.viewport.boundary.ViewportsResource;
 import sol.neptune.elisaboard.viewport.entity.Viewport;
+import sol.neptune.elisaboard.viewport.entity.ViewportSlot;
+import sol.neptune.elisaboard.viewport.entity.ViewportSlotType;
 
 /**
  *
@@ -43,46 +47,44 @@ public class PresentationListPage implements Serializable {
 
     @Inject
     private PresentationResource resource;
-    
+
     @Inject
     private ViewportsResource vpResource;
 
     @Inject
     private ExcelProcessor excelProcessor;
 
-    
+    @Inject
+    private PresentationControl controller;
+
     private Viewport viewport;
+
+    private ViewportSlot selectedSlot;
+
+    List<PresentationItem> allItems = new ArrayList<>();
+
+    private PresentationItem selectedItem;
+
+    private Part file;
 
     @Produces
     @ViewScoped
     @Named("viewport")
     public Viewport getViewport() {
-        if (viewport == null){
-            viewport = vpResource.findOrCreateMainViewport();
-        }
         return viewport;
     }
 
     public void setViewport(Viewport viewport) {
         this.viewport = viewport;
     }
-    
-    
-    
-    
-    
-    List<PresentationItem> allItems = new ArrayList<>();
 
     public List<PresentationItem> getAllItems() {
         return allItems;
     }
 
-    private PresentationItem selectedItem;
-
-    private Part file;
-
     @PostConstruct
     public void init() {
+        viewport = vpResource.findOrCreateMainViewport();
         initAllItems();
     }
 
@@ -99,7 +101,11 @@ public class PresentationListPage implements Serializable {
 
     private void initAllItems() {
         allItems.clear();
-        allItems.addAll(resource.findAllByGraph());
+//        allItems.addAll(resource.findAllByGraph());
+        if (selectedSlot != null && selectedSlot.getSlotType() == ViewportSlotType.PRESENTATIONSTREAM) {
+//            final PresentationStream ps = controller.getPresentationStreamForViewport(viewport);
+            allItems.addAll(resource.findAllItemsForPresentationStream(selectedSlot.getPresentationStream()));
+        }
     }
 
     public String selectItem(PresentationItem item) {
@@ -173,6 +179,25 @@ public class PresentationListPage implements Serializable {
 
     public void setFile(Part file) {
         this.file = file;
+    }
+
+    @Produces
+    @ViewScoped
+    @Named("selectedSlot")
+    public ViewportSlot getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void setSelectedSlot(ViewportSlot selectedSlot) {
+        this.selectedSlot = selectedSlot;
+    }
+    
+    
+    public String selectSlot(ViewportSlot slot){
+        selectedSlot = slot;
+        selectedItem = null;
+        initAllItems();
+        return "";
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package sol.neptune.elisaboard.presentation.boundary;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +16,12 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
 import sol.neptune.elisaboard.presentation.entity.PresentationItem;
+import sol.neptune.elisaboard.presentation.entity.PresentationStream;
 
 /**
  *
@@ -72,5 +77,24 @@ public class PresentationResource {
 
     public void delete(PresentationItem item) {
         em.remove(em.merge(item));
+    }
+
+    public Collection<? extends PresentationItem> findAllItemsForPresentationStream(PresentationStream s) {
+        final EntityGraph<PresentationItem> eg = em.createEntityGraph(PresentationItem.class);
+
+        eg.addSubgraph("document", PresentationDocument.class).addAttributeNodes("name", "documentType");
+
+        Properties props = new Properties();
+        props.put("javax.persistence.loadgraph", eg);
+        final CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
+        final Root root = cq.from(PresentationItem.class);
+        cq.select(root);
+        cq.where(cb.equal(root.get("presentationStream"), s));
+        final TypedQuery qqq = em.createQuery(cq);
+
+        qqq.setHint("javax.persistence.loadgraph", eg);
+        return qqq.getResultList();
     }
 }
