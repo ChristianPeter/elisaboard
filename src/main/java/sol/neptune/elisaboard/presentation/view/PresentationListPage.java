@@ -138,6 +138,7 @@ public class PresentationListPage implements Serializable {
     public String createItem() {
         selectedItem = new PresentationItem();
         selectedItem.setDocument(new PresentationDocument());
+        selectedItem.setPresentationStream(selectedSlot.getPresentationStream());
         return "";
     }
 
