@@ -8,10 +8,9 @@
     <ui:param name="pageTitle" value="Elisaboard Viewer"/>
     <ui:param name="pageId" value="Viewer"/>
     <ui:define name="content">
-        Viewer:
-        #{viewerViewport.template}
         
-        <ui:include src="templates/layoutDEFAULT.xhtml">
+        
+        <ui:include src="templates/layout#{viewerViewport.template}.xhtml">
             
         </ui:include>
     </ui:define>

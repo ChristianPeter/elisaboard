@@ -20,12 +20,19 @@
         <h:outputScript name="./vendor/jquery-ui.js"/>
         <h:outputScript name="./vendor/bootstrap/js/bootstrap.min.js"/>
         <h:outputStylesheet name="./css/main.css"/>
-        <h:outputScript name="./js/main.js"/>
+        <h:outputScript name="./js/viewer.js"/>
         <ui:insert name="head-content"></ui:insert>
     </h:head>
 
 
     <h:body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Elisaboard-Viewer</a>
+                </div>
+            </div>
+        </nav>
         <ui:insert name="content">Content</ui:insert>
     </h:body>
 </html>

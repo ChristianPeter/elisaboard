@@ -8,9 +8,8 @@ package sol.neptune.elisaboard.viewer;
 import java.io.Serializable;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import sol.neptune.elisaboard.viewport.boundary.ViewportsResource;
@@ -20,7 +19,7 @@ import sol.neptune.elisaboard.viewport.entity.Viewport;
  *
  * @author murdoc
  */
-@ViewScoped
+@RequestScoped
 public class Viewer implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(Viewer.class.getName());
@@ -37,7 +36,7 @@ public class Viewer implements Serializable {
 
     @Named("viewerViewport")
     @Produces
-    @SessionScoped
+    @RequestScoped
     public Viewport getViewport() {
         if (viewport == null){
             viewport = vpResource.findMainViewportAndLoadAll();

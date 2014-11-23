@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <!--
+        ITEM#{itemNo}
+    #{slot}
+    #{slot.slotType}
+    #{slot.presentationStream}
+    -->
+    <!--    <div jsf:rendered="#{not empty slot.presentationStream}">
+            <ui:repeat value="#{slot.presentationStream.items}" var="pi">
+                <div class="viewer-presentation-item">
+    #{pi.name}
+    
+    #{pi.document.name}
+</div>
+</ui:repeat>
+</div>-->
+
+
+    <div role="tabpanel" jsf:rendered="#{not empty slot.presentationStream}">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <ui:repeat value="#{slot.presentationStream.items}" var="pi" varStatus="i">                
+                <li role="presentation" class="#{i.index eq 0 ? 'active' : ''}"><a href="#tab#{i.index}" aria-controls="#{i.index}" role="tab" data-toggle="tab">#{pi.name}</a></li>
+            </ui:repeat>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <ui:repeat value="#{slot.presentationStream.items}" var="pi" varStatus="i">
+                <div role="tabpanel" class="tab-pane #{i.index eq 0 ? 'active' : ''}" id="tab#{i.index}">
+                    #{pi.document.name}
+                    <script id="documentData#{i.index}" type="text/hiddenData">
+                        #{pi.document.htmlData}
+                    </script>
+                    <iframe src="" style="overflow-y: visible; width: 100%; overflow-x: hidden; border: 0;"/>
+                </div>
+            </ui:repeat>
+        </div>
+
+    </div>
+</ui:component>
