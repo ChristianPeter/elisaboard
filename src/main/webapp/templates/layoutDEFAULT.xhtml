@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+              xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    Defaultlayout
+
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-9">
+                <ui:include src="viewportItem.xhtml">
+                    <ui:param name="itemNo" value="1"></ui:param>
+                    <ui:param name="slot" value="#{viewerViewport.slotA}"></ui:param>
+                </ui:include>
+            </div>
+            <div class="col-sm-3">
+                <ui:include src="viewportItem.xhtml">
+                    <ui:param name="itemNo" value="2"></ui:param>
+                    <ui:param name="slot" value="#{viewerViewport.slotB}"></ui:param>
+                </ui:include>
+            </div>
+        </div>
+
+    </div>
+</ui:component>

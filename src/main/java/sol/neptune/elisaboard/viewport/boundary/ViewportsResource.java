@@ -8,9 +8,12 @@ package sol.neptune.elisaboard.viewport.boundary;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
+import sol.neptune.elisaboard.presentation.entity.PresentationItem;
 import sol.neptune.elisaboard.presentation.entity.PresentationStream;
 import sol.neptune.elisaboard.viewport.entity.Viewport;
 import sol.neptune.elisaboard.viewport.entity.ViewportSlot;
@@ -45,6 +48,23 @@ public class ViewportsResource {
         }
     }
 
+    public Viewport findMainViewportAndLoadAll() {
+        
+        final EntityGraph<Viewport> eg = em.createEntityGraph(Viewport.class);
+
+        eg.addSubgraph("slotA", ViewportSlot.class).addSubgraph("presentationStream", PresentationStream.class).addSubgraph("items", PresentationItem.class).addSubgraph("document", PresentationDocument.class).addAttributeNodes("name", "documentType", "htmlData");
+        
+        
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Viewport.class));
+
+        final TypedQuery q = em.createQuery(cq);
+        q.setHint("javax.persistence.loadgraph", eg);
+        q.setMaxResults(1);
+
+        return (Viewport) q.getSingleResult();
+    }
+
     private Viewport initViewport() {
         LOG.info("initViewport");
         Viewport viewport = new Viewport();
@@ -57,7 +77,7 @@ public class ViewportsResource {
 
         PresentationStream stream = new PresentationStream();
         slot.setPresentationStream(stream);
-        
+
         ViewportSlot slot2 = new ViewportSlot();
         viewport.setSlotB(slot2);
         slot2.setSlotType(ViewportSlotType.WIDGETS);
