@@ -50,6 +50,7 @@
                                     <thead>
                                         <tr>
                                             <th></th>
+                                            <th>Position</th>
                                             <th>Name</th>
                                             <th>Type</th>
                                             <th>Duration</th>
@@ -63,6 +64,7 @@
                                                         <f:ajax execute="@this" render="detailForm:details" onevent="ocOpenDetailDialog"/>
                                                     </a>
                                                 </td>
+                                                <td>#{item.position}</td>
                                                 <td>#{item.name}</td>
                                                 <td>#{item.document.documentType}</td>
                                                 <td>#{item.duration}</td>

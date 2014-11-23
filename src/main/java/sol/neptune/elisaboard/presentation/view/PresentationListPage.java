@@ -144,6 +144,7 @@ public class PresentationListPage implements Serializable {
         selectedItem = new PresentationItem();
         selectedItem.setDocument(new PresentationDocument());
         selectedItem.setPresentationStream(selectedSlot.getPresentationStream());
+        selectedItem.setPosition(allItems.size());
         return null;
     }
     
