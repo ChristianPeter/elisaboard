@@ -42,55 +42,59 @@ import sol.neptune.elisaboard.viewport.entity.ViewportSlotType;
 @ViewScoped
 @Named("presentationList")
 public class PresentationListPage implements Serializable {
-
+    
     private static final Logger LOG = Logger.getLogger(PresentationListPage.class.getName());
-
+    
     @Inject
     private PresentationResource resource;
-
+    
     @Inject
     private ViewportsResource vpResource;
-
+    
     @Inject
     private ExcelProcessor excelProcessor;
-
+    
     @Inject
     private PresentationControl controller;
-
+    
     private Viewport viewport;
-
+    
     private ViewportSlot selectedSlot;
-
+    
     List<PresentationItem> allItems = new ArrayList<>();
-
+    
     private PresentationItem selectedItem;
-
+    
     private Part file;
-
+    
     @Produces
     @ViewScoped
     @Named("viewport")
     public Viewport getViewport() {
         return viewport;
     }
-
+    
     public void setViewport(Viewport viewport) {
         this.viewport = viewport;
     }
-
+    
     public List<PresentationItem> getAllItems() {
         return allItems;
     }
-
+    
     @PostConstruct
     public void init() {
+        LOG.info("init");
         viewport = vpResource.findOrCreateMainViewport();
+        // after viewport was loaded or created, select the first slot
+        selectedSlot = viewport.getSlotA();
+        
         initAllItems();
     }
-
+    
     public List<SelectItem> getAllDocumentTypes() {
         List<SelectItem> items = new ArrayList<>();
-
+        
         for (DocumentType d : DocumentType.values()) {
             SelectItem i = new SelectItem();
             i.setValue(d);
@@ -98,7 +102,7 @@ public class PresentationListPage implements Serializable {
         }
         return items;
     }
-
+    
     private void initAllItems() {
         allItems.clear();
 //        allItems.addAll(resource.findAllByGraph());
@@ -107,41 +111,42 @@ public class PresentationListPage implements Serializable {
             allItems.addAll(resource.findAllItemsForPresentationStream(selectedSlot.getPresentationStream()));
         }
     }
-
+    
     public String selectItem(PresentationItem item) {
         LOG.info("select item: " + item.toString());
         setSelectedItem(resource.findById(item.getId()));
-        return "";
+        return null;
     }
-
+    
     public String cancel() {
+        LOG.info("Cancel()");
 //        setSelectedItem(null);
-        return "";
+        return null;
     }
-
+    
     public String delete(PresentationItem item) {
         setSelectedItem(null);
         resource.delete(item);
         initAllItems();
-        return "";
+        return null;
     }
-
+    
     public String save() {
         final PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
         LOG.info("save()" + selectedItem + phaseId.getName());
         selectedItem = resource.merge(selectedItem);
         //setSelectedItem(null);
         initAllItems();
-        return "";
+        return null;
     }
-
+    
     public String createItem() {
         selectedItem = new PresentationItem();
         selectedItem.setDocument(new PresentationDocument());
         selectedItem.setPresentationStream(selectedSlot.getPresentationStream());
-        return "";
+        return null;
     }
-
+    
     public void processFile() {
         LOG.info("processFile ... " + file);
 //        final Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
@@ -161,44 +166,43 @@ public class PresentationListPage implements Serializable {
         }
         setFile(null);
     }
-
+    
     public void uploadAjax(AjaxBehaviorEvent event) {
         LOG.info("uploadAjax ... " + file);
     }
-
+    
     public PresentationItem getSelectedItem() {
         return selectedItem;
     }
-
+    
     public void setSelectedItem(PresentationItem selectedItem) {
         this.selectedItem = selectedItem;
     }
-
+    
     public Part getFile() {
         return file;
     }
-
+    
     public void setFile(Part file) {
         this.file = file;
     }
-
+    
     @Produces
     @ViewScoped
     @Named("selectedSlot")
     public ViewportSlot getSelectedSlot() {
         return selectedSlot;
     }
-
+    
     public void setSelectedSlot(ViewportSlot selectedSlot) {
         this.selectedSlot = selectedSlot;
     }
     
-    
-    public String selectSlot(ViewportSlot slot){
+    public String selectSlot(ViewportSlot slot) {
         selectedSlot = slot;
         selectedItem = null;
         initAllItems();
-        return "";
+        return null;
     }
-
+    
 }

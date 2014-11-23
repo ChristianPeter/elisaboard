@@ -22,11 +22,13 @@
 
         <div class="row">
             <h:form id="mainForm">
-                <div id="listCol">
+                <div class="col-sm-4" id="listCol">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h3 class="panel-title">Current Items</h3>
                         </div>
+
+
 
 
                         <div class="panel-body" id="itemListPanel">
@@ -39,7 +41,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li> <a href="#" jsf:action="#{presentationList.createItem()}">VPLAN
-                                                    <f:ajax execute="@this" render="detailForm:details" onevent="ocOpenDetailDialog"/>
+                                                    <f:ajax execute="@this" render="detailForm:details :detailTitle" onevent="ocScrollToDetail"/>
                                                 </a></li>
                                         </ul>
                                     </div>
@@ -60,7 +62,7 @@
                                             <tr>
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-primary" jsf:action="#{presentationList.selectItem(item)}">Edit
-                                                        <f:ajax execute="@this" render="detailForm:details" onevent="ocOpenDetailDialog"/>
+                                                        <f:ajax execute="@this" render="detailForm:details :detailTitle" onevent="ocScrollToDetail"/>
                                                     </a>
                                                 </td>
                                                 <td>#{item.name}</td>
@@ -76,34 +78,13 @@
 
                 </div>
             </h:form>
-
-        </div>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog"  style="width: 1000px;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" onclick="toggleDialogs();"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                        <iframe id="previewFrame" src="" height="800px" width="100%"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetailLabel" aria-hidden="true">
-            <div class="modal-dialog"  >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="modalDetailLabel">Details</h4>
+            <div class="col-sm-8" id="detailCol">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" jsf:id="detailTitle">
+                        <h3 class="panel-title">Details for #{presentationList.selectedItem.name}</h3>
                     </div>
                     <form jsf:id="detailForm" class="form-horizontal" role="form" enctype="multipart/form-data">
-                        <div class="modal-body">
+                        <div class="panel-body">
                             <div jsf:id="details">
                                 <div jsf:rendered="#{not empty presentationList.selectedItem}">
                                     <div class="form-group">
@@ -120,9 +101,7 @@
                                             <script id="documentData" type="text/hiddenData">
                                                 #{presentationList.selectedItem.document.htmlData}
                                             </script>
-                                            <button type="button" class="btn btn-default" jsf:action="#{presentationList.cancel}" >Show
-                                                <f:ajax execute="@this" onevent="ocShowPreview"/>
-                                            </button>
+                                            <button id="btnShowContent" type="button" data-toggle="modal" data-target="#myModal">Show</button>
                                         </div>
                                     </div>
                                     <div class="form-group" jsf:id="fileuploadPanel">
@@ -140,6 +119,19 @@
                                             </button>
                                         </div>
                                     </div>
+
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger" jsf:action="#{presentationList.save()}">Save
+                                                <f:ajax execute="@form" render="detailForm:details mainForm:itemList :detailTitle"/>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group pull-right">
+                                            <button type="button" class="btn btn-default" jsf:action="#{presentationList.cancel()}">Cancel
+                                                <f:ajax execute="@this" render="detailForm:details :detailTitle" onevent="ocScrollToList"/>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div jsf:rendered="#{empty presentationList.selectedItem}">
                                     <div class="jumbotron">
@@ -153,15 +145,24 @@
                             </div>
 
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" jsf:action="#{presentationList.save()}">Save
-                                <f:ajax execute="@form" render="detailForm:details mainForm:itemList" onevent="ocCloseDetailDialog"/>
-                            </button>
-                            <button type="button" class="btn btn-default" jsf:action="#{presentationList.cancel()}">Cancel
-                                <f:ajax execute="@this" render="detailForm:details" onevent="ocCloseDetailDialog"/>
-                            </button>
-                        </div>
                     </form>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog"  style="width: 1000px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="previewFrame" src="#" height="800px" width="100%"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
