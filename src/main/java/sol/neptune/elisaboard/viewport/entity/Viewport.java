@@ -22,6 +22,16 @@ import sol.neptune.elisaboard.common.entity.AbstractEntity;
 @Entity
 public class Viewport extends AbstractEntity implements Serializable {
 
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private ViewportSlot slotA;
 

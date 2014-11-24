@@ -12,6 +12,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import sol.neptune.elisaboard.common.boundary.BaseResource;
 import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
 import sol.neptune.elisaboard.presentation.entity.PresentationItem;
 import sol.neptune.elisaboard.presentation.entity.PresentationStream;
@@ -25,12 +26,18 @@ import sol.neptune.elisaboard.viewport.entity.ViewportTemplate;
  * @author murdoc
  */
 @Stateless
-public class ViewportsResource {
+public class ViewportsResource extends BaseResource<Viewport>{
 
     private static final Logger LOG = Logger.getLogger(ViewportsResource.class.getName());
 
     @PersistenceContext
     private EntityManager em;
+
+    public List<Viewport> findAll() {
+        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Viewport.class));
+        return em.createQuery(cq).getResultList();
+    }
 
     public Viewport findOrCreateMainViewport() {
         LOG.info("findOrCreateMainViewport");
@@ -49,12 +56,11 @@ public class ViewportsResource {
     }
 
     public Viewport findMainViewportAndLoadAll() {
-        
+
         final EntityGraph<Viewport> eg = em.createEntityGraph(Viewport.class);
 
         eg.addSubgraph("slotA", ViewportSlot.class).addSubgraph("presentationStream", PresentationStream.class).addSubgraph("items", PresentationItem.class).addSubgraph("document", PresentationDocument.class).addAttributeNodes("name", "documentType", "htmlData");
-        
-        
+
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Viewport.class));
 
@@ -65,7 +71,7 @@ public class ViewportsResource {
         return (Viewport) q.getSingleResult();
     }
 
-    private Viewport initViewport() {
+    public Viewport initViewport() {
         LOG.info("initViewport");
         Viewport viewport = new Viewport();
         viewport.setTemplate(ViewportTemplate.DEFAULT);
@@ -84,5 +90,10 @@ public class ViewportsResource {
 
         em.persist(viewport);
         return viewport;
+    }
+
+    @Override
+    public EntityManager getEm() {
+        return em;
     }
 }

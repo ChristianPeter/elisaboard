@@ -10,5 +10,7 @@ package sol.neptune.elisaboard.viewport.entity;
  * @author murdoc
  */
 public enum ViewportTemplate {
-    DEFAULT;
+    DEFAULT,
+    ONESTREAMONLY;
+    
 }

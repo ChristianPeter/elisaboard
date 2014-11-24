@@ -17,8 +17,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import sol.neptune.elisaboard.common.boundary.BaseResource;
 import sol.neptune.elisaboard.presentation.entity.PresentationDocument;
 import sol.neptune.elisaboard.presentation.entity.PresentationItem;
 import sol.neptune.elisaboard.presentation.entity.PresentationStream;
@@ -28,7 +28,7 @@ import sol.neptune.elisaboard.presentation.entity.PresentationStream;
  * @author murdoc
  */
 @Stateless
-public class PresentationResource {
+public class PresentationResource extends BaseResource<PresentationItem> {
 
     private static final Logger LOG = Logger.getLogger(PresentationResource.class.getName());
 
@@ -58,14 +58,6 @@ public class PresentationResource {
         return qqq.getResultList();
     }
 
-    public PresentationItem merge(PresentationItem item) {
-        return em.merge(item);
-    }
-
-    public void persist(PresentationItem item) {
-        em.persist(item);
-    }
-
     public PresentationItem findById(Long id) {
         final EntityGraph<PresentationItem> eg = em.createEntityGraph(PresentationItem.class);
 
@@ -75,9 +67,6 @@ public class PresentationResource {
         return em.find(PresentationItem.class, id, props);
     }
 
-    public void delete(PresentationItem item) {
-        em.remove(em.merge(item));
-    }
 
     public Collection<? extends PresentationItem> findAllItemsForPresentationStream(PresentationStream s) {
         final EntityGraph<PresentationItem> eg = em.createEntityGraph(PresentationItem.class);
@@ -97,4 +86,10 @@ public class PresentationResource {
         qqq.setHint("javax.persistence.loadgraph", eg);
         return qqq.getResultList();
     }
+
+    @Override
+    public EntityManager getEm() {
+        return em;
+    }
+
 }

@@ -27,42 +27,9 @@
 
     <h:body>
 
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#{request.contextPath}">Elisaboard</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#{request.contextPath}">Home</a></li>
-                        <li><a href="#{request.contextPath}/faces/variant2.xhtml">Variant2</a></li>
-                        <li><a href="#{request.contextPath}/faces/variant3.xhtml">Variant3</a></li>                        
-                        <li><a href="#">Admin</a></li>
-                    </ul>
-                    <h:form class="navbar-form navbar-right" role="form">
-
-                    </h:form>
-                </div>
-            </div>
-        </div>
+        <ui:include src="navbar.xhtml"></ui:include>
         <div class="container-fluid">
-            <div class="col-sm-3 col-md-2 sidebar">
-                <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">Start <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Viewports</a></li>
-                    <li><a href="#">Presentations</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li><a href="#">Users</a></li>
-                    <li><a href="">Configuration</a></li>
-                </ul>
-            </div>
+            <ui:include src="sidebar.xhtml"></ui:include>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <ui:insert name="content">Content</ui:insert>
             </div>

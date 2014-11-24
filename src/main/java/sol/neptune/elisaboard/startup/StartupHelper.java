@@ -43,7 +43,7 @@ public class StartupHelper {
             LOG.info("creat demodata...");
             Viewport vp = vr.findOrCreateMainViewport();
             
-            
+            vr.initViewport();
             
             
             

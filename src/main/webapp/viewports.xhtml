@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                template="/templates/template.xhtml">
+    <ui:param name="pageTitle" value="Viewports"/>
+    <ui:param name="pageId" value="Viewports"/>
+    <ui:define name="content">
+
+        <div class="page-header">
+            <h1>Example page header <small>Subtext for header</small></h1>
+        </div>
+
+        <h:form>
+
+            <div class="row" >
+                <ui:repeat value="#{viewportPage.allViewports}" var="vp">
+                    <ui:decorate template="templates/viewport.xhtml">
+                        <ui:param name="viewportType" value="#{vp.template}"/>
+                        <ui:param name="widgetClass" value="col-xs-9 col-sm-6"/>   
+                        <ui:define name="controls">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#" jsf:action="#{viewportPage.selectLayout(vp, 'DEFAULT')}">Layout Default</a></li>
+                                    <li><a href="#" jsf:action="#{viewportPage.selectLayout(vp, 'ONESTREAMONLY')}">Presentation only</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Make primary</a></li>
+                                    <li><a href="#">Delete</a></li>
+                                </ul>
+                            </div>
+                        </ui:define>
+                    </ui:decorate>
+                </ui:repeat>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
